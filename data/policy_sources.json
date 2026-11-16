@@ -1,0 +1,6 @@
+[
+  { "id": "openai-privacy", "company": "OpenAI", "app": "ChatGPT", "name": "Privacy Policy", "url": "https://openai.com/policies/row-privacy-policy/" },
+  { "id": "anthropic-privacy", "company": "Anthropic", "app": "Claude", "name": "Privacy Policy", "url": "https://www.anthropic.com/legal/privacy" },
+  { "id": "google-gemini-hub", "company": "Google", "app": "Gemini", "name": "Gemini Apps Privacy Hub", "url": "https://support.google.com/gemini/answer/13594961?hl=en" },
+  { "id": "google-privacy", "company": "Google", "app": "Gemini", "name": "Google Privacy Policy", "url": "https://policies.google.com/privacy?hl=en" }
+]

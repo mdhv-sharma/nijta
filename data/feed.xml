@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Nijta: AI privacy policy changes</title>
+  <link>https://github.com/</link>
+  <description>Changes in the privacy policies of AI chat apps, explained simply.</description>
+  <item>
+    <title>Meta AI: Meta AI chats are used to personalise ads and posts</title>
+    <link>https://www.thestar.com.my/tech/tech-news/2025/10/01/meta-to-use-ai-chats-to-personalize-content-and-ads-from-december</link>
+    <guid isPermaLink="false">meta-ai-ads-2025-12</guid>
+    <pubDate>Tue, 16 Dec 2025 09:00:00 GMT</pubDate>
+    <description>From 16 December 2025, what people say to Meta AI on Facebook, Instagram and WhatsApp is used to choose the ads and content they see. Meta said there is no opt-out, outside the EU, UK and South Korea. If you use Meta AI in WhatsApp or Instagram in India, your chats with it feed ad targeting.</description>
+  </item>
+  <item>
+    <title>ChatGPT: Deleted ChatGPT chats were kept for months under a court order</title>
+    <link>https://gizmodo.com/openai-will-stop-saving-users-deleted-posts-2000671374</link>
+    <guid isPermaLink="false">openai-deleted-chats-2025-10</guid>
+    <pubDate>Thu, 09 Oct 2025 09:00:00 GMT</pubDate>
+    <description>In May 2025 a US court ordered OpenAI to preserve chat logs it would normally delete, including chats users had deleted, as evidence in the New York Times lawsuit. In October 2025 the court lifted that order for most users. “Delete” did not always mean deleted. A court or a law can make a company keep your chats whatever its policy says.</description>
+  </item>
+  <item>
+    <title>Claude: Claude chats are used for training unless you opt out</title>
+    <link>https://hyper.ai/en/stories/29164669b47e5d690e67d25eb3a05c0f</link>
+    <guid isPermaLink="false">anthropic-training-2025-09</guid>
+    <pubDate>Sun, 28 Sep 2025 09:00:00 GMT</pubDate>
+    <description>Anthropic began training its models on consumer chats and coding sessions unless the user turns this off, and extended how long it keeps that data to five years for users who allow training. Users had to choose by 28 September 2025. If you never changed the setting, your new and resumed Claude chats can be used for training and kept much longer.</description>
+  </item>
+  <item>
+    <title>Gemini: Gemini uploads can be used to improve Google services</title>
+    <link>https://blog.google/products-and-platforms/products/gemini/temporary-chats-privacy-controls/</link>
+    <guid isPermaLink="false">google-keep-activity-2025-09</guid>
+    <pubDate>Tue, 02 Sep 2025 09:00:00 GMT</pubDate>
+    <description>Google renamed “Gemini Apps Activity” to “Keep activity”. While it is on, a sample of the files and photos you upload from 2 September 2025 can be used to improve Google services. Temporary Chats are not used this way. A photo of an ID, marksheet or medical report uploaded to Gemini could be sampled, unless Keep activity is off.</description>
+  </item>
+</channel>
+</rss>
