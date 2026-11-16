@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo chat (simulated)</title>
+  <style>
+    :root { --ink: #1b1f2a; --muted: #6b7280; --line: #e3e6ee; --soft: #eef0ff; --red: #b42318; --green: #067647; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: #f6f7fb; }
+    .banner { background: #fffaeb; color: #7a2e0e; border-bottom: 1px solid #fedf89; padding: 8px 16px; font-size: 13px; text-align: center; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--line); position: sticky; top: 0; }
+    .app { font-weight: 700; } .title { color: var(--muted); font-size: 14px; }
+    .btn { border: 1px solid var(--red); background: var(--red); color: #fff; padding: 9px 14px; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    main { max-width: 760px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .msg { max-width: 85%; padding: 10px 14px; border-radius: 14px; white-space: pre-wrap; word-wrap: break-word; line-height: 1.5; }
+    .user { align-self: flex-end; background: var(--soft); } .assistant { align-self: flex-start; background: #fff; border: 1px solid var(--line); }
+    .who { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
+    .att { font-size: 13px; background: #f0f9ff; color: #0b4a6f; border-radius: 8px; padding: 4px 8px; display: inline-block; margin-bottom: 6px; }
+    .focus { outline: 3px solid #fb923c; }
+    .deleted { text-align: center; padding: 60px 20px; } .deleted h2 { color: var(--green); }
+  </style>
+</head>
+<body>
+  <div class="banner">🧪 <b>Demo only.</b> This page imitates an AI chat app so you can show how deleting a chat works. It is not the real app, and nothing here is real.</div>
+  <header>
+    <div><div class="app" id="app">Demo chat</div><div class="title" id="title"></div></div>
+    <button class="btn" id="del">🗑️ Delete this chat</button>
+  </header>
+  <main id="main"></main>
+
+  <script src="../js/detectors.js"></script>
+  <script src="../js/parsers.js"></script>
+  <script src="demo-data.js"></script>
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search), ci = +q.get("i"), mi = q.has("m") ? +q.get("m") : -1;
+      var d = window.NIJTA_DEMO, P = window.NijtaParse;
+      // Built exactly like Nijta's "Try with demo data", so chat numbers match.
+      var data = P.merge([P.parseJSON(d.chatgpt), P.parseJSON(d.claude), P.parseJSON(d.gemini)]);
+      var conv = data.conversations[ci], main = document.getElementById("main");
+      function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+      if (!conv) { main.innerHTML = "<p>Chat not found.</p>"; document.getElementById("del").hidden = true; return; }
+      var key = (conv.source || "") + "|" + conv.id + "|" + (conv.created || "");
+      document.title = conv.title + " · " + conv.source + " (demo)";
+      document.getElementById("app").textContent = conv.source + " (simulated)";
+      document.getElementById("title").textContent = conv.title;
+      function isDeleted() { try { return !!JSON.parse(localStorage.getItem("nijta-deleted") || "{}")[key]; } catch (e) { return false; } }
+      function show() {
+        if (isDeleted()) {
+          main.innerHTML = '<div class="deleted"><h2>✓ Chat deleted</h2><p>Nijta\'s “Chats to delete” checklist has been ticked for this chat.<br>Close this tab to go back to Nijta.</p></div>';
+          document.getElementById("del").hidden = true;
+          return;
+        }
+        main.innerHTML = conv.messages.map(function (m, i) {
+          return '<div class="msg ' + m.role + (i === mi ? " focus" : "") + '" id="m' + i + '"><div class="who">' + (m.role === "user" ? "You" : esc(conv.source)) + "</div>" +
+            (m.attachments ? '<div class="att">📷 ' + m.attachments + " file(s) attached</div>\n" : "") + esc(m.text) + "</div>";
+        }).join("");
+        var f = document.getElementById("m" + mi);
+        if (f) f.scrollIntoView({ block: "center" });
+      }
+      document.getElementById("del").addEventListener("click", function () {
+        try { var all = JSON.parse(localStorage.getItem("nijta-deleted") || "{}"); all[key] = Date.now(); localStorage.setItem("nijta-deleted", JSON.stringify(all)); } catch (e) { }
+        show();
+      });
+      show();
+    })();
+  </script>
+</body>
+</html>
