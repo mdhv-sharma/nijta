@@ -1,0 +1,36 @@
+# Runs the Nijta policy watcher once a day.
+# When a policy changed it: (1) saves the change, so the app shows it automatically,
+# (2) updates data/feed.xml (RSS), (3) opens a GitHub issue, so everyone who "watches"
+# the project gets an email from GitHub.
+# One-time setup: Settings -> Actions -> General -> Workflow permissions -> "Read and write permissions".
+name: Policy watch
+on:
+  schedule:
+    - cron: "30 3 * * *"      # every day at 9:00 am India time
+  workflow_dispatch:           # also lets you press "Run workflow" by hand
+permissions:
+  contents: write
+  issues: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/policy_watch.js
+      - name: Email watchers (GitHub issue)
+        if: hashFiles('policy_alert.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title "Privacy policy change detected ($(date +%d-%b-%Y))" --body-file policy_alert.md
+          rm policy_alert.md
+      - name: Save results
+        run: |
+          git config user.name "nijta-policy-watch"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || git commit -m "Policy watch: update"
+          git push
