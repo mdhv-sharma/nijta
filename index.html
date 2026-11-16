@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Nijta: what have you told AI?</title>
+  <meta name="description" content="Find what you told AI, understand what they can do with it, take it back. Runs fully on your device.">
+  <meta name="theme-color" content="#3730a3">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon-192.png" alt="" class="logo">
+      <div>
+        <div class="brand-name">Nijta <span class="brand-hi">निजता</span></div>
+        <div class="brand-tag">Your privacy in the AI age</div>
+      </div>
+    </div>
+    <label class="mask-toggle" title="Hide all real values on screen (for demos)">
+      <input type="checkbox" id="maskToggle">
+      <span class="switch"></span>
+      <span class="mask-label">Mask</span>
+    </label>
+  </header>
+
+  <div id="newsBanner" class="news-banner" hidden></div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="find" role="tab">1 · Find it</button>
+    <button class="tab" data-tab="understand" role="tab">2 · Understand it <span class="tab-dot" id="polDot" hidden></span></button>
+    <button class="tab" data-tab="takeback" role="tab">3 · Take it back</button>
+  </nav>
+
+  <main>
+    <!-- ================= FIND IT ================= -->
+    <section id="tab-find" class="tabpanel">
+
+      <!-- Upload screen -->
+      <div id="uploadView">
+        <div class="hero">
+          <h1>What have you told AI?</h1>
+          <p>Drop the chat export from ChatGPT or Claude. Nijta finds every ID number, bank detail and password you
+            shared, the health, relationship and other sensitive things you talked about, and whose data it was. It also checks the AI's replies and flags photos of documents you uploaded.</p>
+        </div>
+
+        <div id="dropZone" class="dropzone" tabindex="0">
+          <div class="drop-icon">📦</div>
+          <div class="drop-title">Drop your export .zip here</div>
+          <div class="drop-sub">or</div>
+          <div class="drop-buttons">
+            <label class="btn primary">Choose file<input type="file" id="fileInput" accept=".zip,.json,.jsonl" multiple hidden></label>
+            <button class="btn" id="demoBtn">Try with demo data</button>
+          </div>
+        </div>
+
+        <div class="privacy-note">🔒 <b>Your file never leaves this device.</b> Nijta reads it inside your browser and works
+          even with the internet off.</div>
+
+        <details class="howto">
+          <summary>How do I get my export file?</summary>
+          <div class="howto-grid">
+            <div><h4>ChatGPT</h4><ol><li>Settings → Data controls</li><li>Export data → Confirm</li><li>Open the email from OpenAI and download the .zip</li></ol></div>
+            <div><h4>Claude</h4><ol><li>Settings → Privacy → Export data</li><li>The email gives a list of links: download <b>conversations-000.zip</b></li><li>Drop that zip here</li></ol></div>
+            <div><h4>Gemini</h4><ol><li>Open Google Takeout</li><li>Select only “My Activity” → Gemini Apps, format JSON</li><li>Download the .zip</li></ol></div>
+          </div>
+          <p class="muted small">Exports can take from a few minutes to a few days to arrive.</p>
+        </details>
+        <div id="errorBox" class="error" hidden></div>
+      </div>
+
+      <!-- Progress -->
+      <div id="progressView" hidden>
+        <div class="progress-card">
+          <div class="progress-title">Reading your chats…</div>
+          <div class="progress-bar"><div id="progressFill"></div></div>
+          <div class="muted small" id="progressText">0%</div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="resultsView" hidden>
+        <div class="summary-card">
+          <div class="score-wrap">
+            <svg viewBox="0 0 120 120" class="score-ring" aria-hidden="true">
+              <circle cx="60" cy="60" r="52" class="ring-bg"></circle>
+              <circle cx="60" cy="60" r="52" class="ring-fg" id="ringFg"></circle>
+            </svg>
+            <div class="score-num"><span id="scoreNum">0</span><small>/100</small></div>
+          </div>
+          <div class="summary-text">
+            <div class="level" id="levelBadge"></div>
+            <h2 id="headline"></h2>
+            <p id="subline" class="muted"></p>
+            <div class="risk-split">
+              <div class="risk-part"><div class="rp-head"><span>💳 Fraud &amp; identity risk</span><b id="riskFraud">0</b></div>
+                <div class="rp-bar"><div id="riskFraudBar"></div></div><div class="small muted">IDs, bank details, passwords, contacts</div></div>
+              <div class="risk-part"><div class="rp-head"><span>💬 Sensitive personal info</span><b id="riskSens">0</b></div>
+                <div class="rp-bar"><div id="riskSensBar"></div></div><div class="small muted">Health, relationships, beliefs, who you are</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tools-row">
+          <div class="search-box">
+            <input id="searchInput" type="search" placeholder="🔎 Search all your chats for anything: a name, a number, a word…" autocomplete="off">
+          </div>
+          <label class="max-toggle" title="Also lists sensitive words even when the sentence doesn't look personal. More to review, but nothing is skipped."><input type="checkbox" id="maxToggle"> Maximum sensitivity</label>
+          <button class="btn small" id="reportBtn" title="Values are masked in the report">Save report (PDF)</button>
+        </div>
+        <div id="searchOut" class="search-out" hidden></div>
+
+
+        <h3 class="section-title">What you shared</h3>
+        <div id="typeCards" class="type-cards"></div>
+
+        <div id="comboBox" class="others" hidden></div>
+        <div id="othersBox" class="others" hidden></div>
+        <div id="imagesBox" class="images-box" hidden></div>
+
+        <h3 class="section-title">When you shared it</h3>
+        <div class="chart-card">
+          <div class="chart-head"><span>Personal data shared per month</span><button class="linkbtn" id="tableToggle">Show as table</button></div>
+          <div id="timeline" class="timeline"></div>
+          <div id="timelineTable" hidden></div>
+        </div>
+
+        <h3 class="section-title">Every finding <span class="muted small" id="filterInfo"></span></h3>
+        <div class="filters" id="filters"></div>
+        <div id="findingList" class="finding-list"></div>
+
+        <details class="checker" id="checker">
+          <summary>🔍 Didn't find something you know you shared? Test it here</summary>
+          <p class="muted small">Type or paste the sentence the way you wrote it to the AI. It is checked on this device only. Nothing is saved or sent.</p>
+          <textarea id="checkInput" rows="3" placeholder="e.g. my DL number is ..."></textarea>
+          <div><button class="btn" id="checkBtn">Check</button></div>
+          <div id="checkOut"></div>
+          <p class="small" style="margin-top:12px"><button class="linkbtn" id="shapeBtn">Show my export's structure (safe to share)</button>
+            <span class="muted">Field names only, never your text. Send this to the team if an export isn't read properly.</span></p>
+          <pre id="shapeOut" class="shape-out" hidden></pre>
+        </details>
+
+        <h3 class="section-title">Chats to delete <span class="muted small" id="deleteProgress"></span></h3>
+        <p class="muted small" style="margin-top:-6px">Nijta can't delete anything for you (it never logs into your account). Open each chat, delete it in the app, then tick it here.</p>
+        <div id="deleteList" class="delete-list"></div>
+        <details class="howto" style="margin-top:10px">
+          <summary>Delete everything at once instead?</summary>
+          <ul class="small">
+            <li><b>ChatGPT:</b> Settings → look for <i>Delete all chats</i>.</li>
+            <li><b>Gemini:</b> myactivity.google.com/product/gemini → <i>Delete</i> → <i>All time</i>.</li>
+            <li><b>Claude:</b> delete chats from each chat's menu (⋯ → Delete).</li>
+          </ul>
+          <p class="small muted">Deleting from the app removes it from your history. To ask the company to erase its copies, use the “Take it back” tab (coming next).</p>
+        </details>
+
+        <h3 class="section-title">What to do now</h3>
+        <div id="nextSteps" class="next-steps"></div>
+
+        <div class="center"><button class="btn" id="againBtn">Scan another file</button></div>
+      </div>
+    </section>
+
+    <!-- ================= UNDERSTAND IT ================= -->
+    <section id="tab-understand" class="tabpanel" hidden>
+      <div class="hero"><h1>What changed in AI privacy policies</h1>
+        <p>When an AI company changes its rules, Nijta shows what changed, how it affects you and what you can do.</p></div>
+      <div class="filters" id="polFilters"></div>
+      <div id="polList" class="pol-list"></div>
+      <p class="muted small" id="polFoot"></p>
+
+      <div class="hero" style="margin-top:34px"><h1>Why this matters</h1>
+        <p>Your chats sit on a company's servers. These are real incidents where AI chats got out. Each has a source you can check.</p></div>
+
+      <div class="inc-grid">
+        <div class="inc"><div class="inc-num">300 million</div><div class="inc-title">private AI chats left open on the internet</div>
+          <p>Feb 2026 · The app “Chat &amp; Ask AI” exposed the full chat histories of over 25 million users through one wrong database setting.</p>
+          <a target="_blank" rel="noopener" href="https://www.malwarebytes.com/blog/news/2026/02/ai-chat-app-leak-exposes-300-million-messages-tied-to-25-million-users">Source: Malwarebytes ↗</a></div>
+        <div class="inc"><div class="inc-num">12,632</div><div class="inc-title">Indian ChatGPT accounts stolen and traded</div>
+          <p>2022–23 · Group-IB found over 100,000 ChatGPT logins in malware logs sold on the dark web. A stolen login opens every saved chat.</p>
+          <a target="_blank" rel="noopener" href="https://scmagazine.com/news/infostealers-compromise-101134-chatgpt-accounts">Source: SC Media / Group-IB ↗</a></div>
+        <div class="inc"><div class="inc-num">Thousands</div><div class="inc-title">of shared ChatGPT chats appeared in Google search</div>
+          <p>Jul–Aug 2025 · Shared chats with personal details became searchable. OpenAI removed the feature.</p>
+          <a target="_blank" rel="noopener" href="https://www.fastcompany.com/91376687/google-indexing-chatgpt-conversations">Source: Fast Company ↗</a></div>
+        <div class="inc"><div class="inc-num">1 million+</div><div class="inc-title">log lines with chat history exposed by DeepSeek</div>
+          <p>Jan 2025 · Researchers found a DeepSeek database open to anyone, with no password.</p>
+          <a target="_blank" rel="noopener" href="https://www.wiz.io/blog/wiz-research-uncovers-exposed-deepseek-database-leak">Source: Wiz Research ↗</a></div>
+        <div class="inc"><div class="inc-num">3 leaks</div><div class="inc-title">of secret Samsung code pasted into ChatGPT</div>
+          <p>2023 · Engineers pasted confidential source code and meeting notes. Samsung then restricted AI tools at work.</p>
+          <a target="_blank" rel="noopener" href="https://www.techradar.com/news/samsung-bans-chatgpt-use-after-employee-leak">Source: TechRadar ↗</a></div>
+      </div>
+      <p class="muted small">None of these was “ChatGPT hacked and leaked your Aadhaar”. The point is simpler: your chats are stored, and stored data gets out in many ways.</p>
+
+      <h3 class="section-title">Stop your chats being used for AI training</h3>
+      <p class="muted small" style="margin-top:-6px">A Stanford study (2025) found the big AI companies use chats for training by default. Turn it off yourself. Setting names change over time; if you can't find one, search the app's help for “model training”.</p>
+      <div class="howto-grid">
+        <div class="set-card"><h4>ChatGPT</h4><ol><li>Settings → Data controls</li><li>Turn off <b>Improve the model for everyone</b></li><li>For one-off sensitive questions use <b>Temporary chat</b></li></ol></div>
+        <div class="set-card"><h4>Claude</h4><ol><li>Settings → Privacy</li><li>Turn off <b>Help improve Claude</b></li><li>Delete chats you no longer need</li></ol></div>
+        <div class="set-card"><h4>Gemini</h4><ol><li>Open myactivity.google.com/product/gemini</li><li>Turn off <b>Gemini Apps Activity</b> (also shown as “Keep activity”)</li><li>Set <b>Auto-delete</b> to 3 months</li></ol></div>
+      </div>
+
+    </section>
+
+    <!-- ================= TAKE IT BACK ================= -->
+    <section id="tab-takeback" class="tabpanel" hidden>
+      <div class="hero"><h1>Ask the company to delete your data</h1>
+        <p>Deleting a chat removes it from your screen. This drafts a formal request under India's Digital Personal Data Protection Act, 2023, asking the company to erase its copies.</p></div>
+      <div class="tb-note">⚖️ <b>Know this first:</b> the rights in Sections 11–14 of the Act come into force on <b>13 May 2027</b>. Until then companies are not legally bound in India to act, but most already accept such requests. Nijta is a student project and this is not legal advice.</div>
+
+      <div class="tb-form">
+        <label>Your full name <input id="tbName" type="text" autocomplete="name"></label>
+        <label>Email on your AI account <input id="tbEmail" type="email" autocomplete="email"></label>
+        <label>Company
+          <select id="tbCompany"><option value="openai">OpenAI (ChatGPT)</option><option value="google">Google (Gemini)</option><option value="anthropic">Anthropic (Claude)</option><option value="other">Other</option></select></label>
+        <label id="tbOtherWrap" hidden>Company name <input id="tbOther" type="text"></label>
+        <label>What you want
+          <select id="tbType"><option value="erase">Erase my data</option><option value="access">Tell me what data you hold</option><option value="correct">Correct my data</option><option value="withdraw">Stop using my chats for training</option></select></label>
+      </div>
+      <div class="ai-actions"><button class="btn primary" id="tbMake">Write my request</button></div>
+
+      <div id="tbResult" hidden>
+        <div id="tbWhere" class="tb-where"></div>
+        <textarea id="tbLetter" rows="18" spellcheck="false"></textarea>
+        <div class="ai-actions">
+          <button class="btn small" id="tbCopy">Copy</button>
+          <a class="btn small primary" id="tbGmail" target="_blank" rel="noopener">Open ready draft in Gmail ↗</a>
+          <a class="btn small" id="tbMail" target="_blank" rel="noopener" hidden>Open in mail app ↗</a>
+          <button class="btn small" id="tbSave" title="The company has up to 90 days to reply. Nijta counts the days and tells you when it is overdue.">I sent it: start the 90-day reply countdown</button>
+          <span id="tbMsg" class="small muted"></span>
+        </div>
+      </div>
+
+      <h3 class="section-title">Requests you've sent</h3>
+      <div id="tbTracker" class="delete-list"></div>
+    </section>
+  </main>
+
+  <!-- Chat viewer -->
+  <div id="chatModal" class="modal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="chatTitle">
+      <div class="modal-head">
+        <div><div class="muted small" id="chatMeta"></div><h3 id="chatTitle"></h3></div>
+        <button class="iconbtn" id="closeChat" aria-label="Close">✕</button>
+      </div>
+      <div id="chatBody" class="chat-body"></div>
+    </div>
+  </div>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <footer class="foot">Nijta · Project Expo 2026 · SMVDU · Runs fully on your device. Not legal advice.</footer>
+
+  <script src="vendor/jszip.min.js"></script>
+  <script src="js/detectors.js"></script>
+  <script src="js/topics.js"></script>
+  <script src="js/parsers.js"></script>
+  <script src="js/scan.js"></script>
+  <script src="demo/demo-data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/rights.js"></script>
+  <script src="js/policy_kb.js"></script>
+  <script src="data/policy_changes.js"></script>
+  <script src="js/policy.js"></script>
+</body>
+</html>
