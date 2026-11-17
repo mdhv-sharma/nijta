@@ -2,7 +2,7 @@
 // "curated" entries were written by the team from public sources. "auto" entries are added by
 // tools/policy_watch.js (run daily by GitHub Actions) when a policy page changes.
 window.NIJTA_POLICY = {
- "updated": "2026-11-16",
+ "updated": "2026-11-17",
  "changes": [
   {
    "id": "meta-ai-ads-2025-12",
