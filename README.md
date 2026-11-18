@@ -13,7 +13,6 @@ Project Expo 2026 · Shri Mata Vaishno Devi University (SMVDU), Katra
 - **Live app:** https://mdhv-sharma.github.io/nijta/
 
 - **How to use it:** [HOW_TO_USE.md](HOW_TO_USE.md)
-- **How to put it online:** [GITHUB_SETUP.md](GITHUB_SETUP.md)
 
 ## Run it
 - Double-click (or right-click → Open with Chrome) **index.html**, or
