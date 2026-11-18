@@ -2,8 +2,42 @@
 // "curated" entries were written by the team from public sources. "auto" entries are added by
 // tools/policy_watch.js (run daily by GitHub Actions) when a policy page changes.
 window.NIJTA_POLICY = {
- "updated": "2026-11-17",
+ "updated": "2026-11-18",
  "changes": [
+  {
+   "id": "google-gemini-hub-2026-11-18",
+   "kind": "auto",
+   "company": "Google",
+   "app": "Gemini",
+   "date": "2026-11-18",
+   "title": "Google changed its Gemini Apps Privacy Hub: sharing with others, memory about you",
+   "topics": [
+    "sharing",
+    "memory"
+   ],
+   "details": {
+    "sharing": {
+     "added": [
+      "To keep you signed in and remember your site preferences, Gemini saves certain information from your browser session, like third-party website cookies and other site data."
+     ],
+     "removed": []
+    },
+    "memory": {
+     "added": [
+      "To keep you signed in and remember your site preferences, Gemini saves certain information from your browser session, like third-party website cookies and other site data."
+     ],
+     "removed": []
+    }
+   },
+   "counts": {
+    "added": 7,
+    "removed": 2
+   },
+   "source": {
+    "name": "Gemini Apps Privacy Hub",
+    "url": "https://support.google.com/gemini/answer/13594961?hl=en"
+   }
+  },
   {
    "id": "meta-ai-ads-2025-12",
    "kind": "curated",
