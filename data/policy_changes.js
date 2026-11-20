@@ -2,8 +2,35 @@
 // "curated" entries were written by the team from public sources. "auto" entries are added by
 // tools/policy_watch.js (run daily by GitHub Actions) when a policy page changes.
 window.NIJTA_POLICY = {
- "updated": "2026-11-19",
+ "updated": "2026-11-20",
  "changes": [
+  {
+   "id": "google-gemini-hub-2026-11-20",
+   "kind": "auto",
+   "company": "Google",
+   "app": "Gemini",
+   "date": "2026-11-20",
+   "title": "Google changed its Gemini Apps Privacy Hub: sharing with others",
+   "topics": [
+    "sharing"
+   ],
+   "details": {
+    "sharing": {
+     "added": [],
+     "removed": [
+      "Recordings and transcripts of your interactions with Gemini Live, as well as other content you share with Gemini Live, are processed per the Gemini Apps Privacy Notice and store…"
+     ]
+    }
+   },
+   "counts": {
+    "added": 1,
+    "removed": 1
+   },
+   "source": {
+    "name": "Gemini Apps Privacy Hub",
+    "url": "https://support.google.com/gemini/answer/13594961?hl=en"
+   }
+  },
   {
    "id": "google-gemini-hub-2026-11-18",
    "kind": "auto",
