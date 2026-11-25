@@ -2,8 +2,78 @@
 // "curated" entries were written by the team from public sources. "auto" entries are added by
 // tools/policy_watch.js (run daily by GitHub Actions) when a policy page changes.
 window.NIJTA_POLICY = {
- "updated": "2026-11-24",
+ "updated": "2026-11-25",
  "changes": [
+  {
+   "id": "google-gemini-hub-2026-11-25",
+   "kind": "auto",
+   "company": "Google",
+   "app": "Gemini",
+   "date": "2026-11-25",
+   "title": "Google changed its Gemini Apps Privacy Hub: ads and personalisation, how long data is kept, human review, ai training, sharing with others, your controls and rights",
+   "topics": [
+    "ads",
+    "retention",
+    "humans",
+    "training",
+    "sharing",
+    "rights"
+   ],
+   "details": {
+    "ads": {
+     "added": [
+      "By default, your Gemini Apps chats are not being used to show you ads.",
+      "This means Gemini chats data may also be used to show you ads, which may be personalized depending on your settings."
+     ],
+     "removed": [
+      "Your Gemini Apps chats are not being used to show you ads."
+     ]
+    },
+    "retention": {
+     "added": [
+      "(Coming soon) If you use Personal Intelligence in AI Mode and choose to connect Gemini chats, data from Gemini Apps is retained, shared and used by Search services according to …"
+     ],
+     "removed": []
+    },
+    "humans": {
+     "added": [
+      "(Coming soon) If you use Personal Intelligence in AI Mode and choose to connect Gemini chats, data from Gemini Apps is retained, shared and used by Search services according to …"
+     ],
+     "removed": []
+    },
+    "training": {
+     "added": [
+      "Your data can be used by Search services to train generative AI models, depending on your Search services settings.",
+      "You control whether your Gemini Live data is used to train generative AI models ."
+     ],
+     "removed": []
+    },
+    "sharing": {
+     "added": [
+      "depending on your settings in Gemini History , transcripts of your Live chats and attachments you share with Gemini Live are used to train generative AI models."
+     ],
+     "removed": [
+      "If History is on, transcripts of your Live chats and attachments you share with Gemini Live are used to improve Google services, including AI models."
+     ]
+    },
+    "rights": {
+     "added": [
+      "For calls made using the Phone by Google app, you can also delete your call history, transcripts, and recordings directly in the Phone by Google app."
+     ],
+     "removed": [
+      "You can also delete your call history, transcripts, and recordings directly in the Phone by Google app."
+     ]
+    }
+   },
+   "counts": {
+    "added": 24,
+    "removed": 14
+   },
+   "source": {
+    "name": "Gemini Apps Privacy Hub",
+    "url": "https://support.google.com/gemini/answer/13594961?hl=en"
+   }
+  },
   {
    "id": "google-gemini-hub-2026-11-20",
    "kind": "auto",
