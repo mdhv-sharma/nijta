@@ -1,6 +1,6 @@
 {
  "url": "https://support.google.com/gemini/answer/13594961?hl=en",
- "checked": "2026-11-25",
+ "checked": "2026-11-26",
  "hash": "ba4b1e5475128294f445073500f348fe8aa7c2b5702b01a6c9efcc25c6a3768a",
  "sentences": [
   "Gemini Apps Privacy Hub - Gemini Apps Help Skip to main content .",
@@ -422,7 +422,7 @@
   "Gemini Live data stored in your Gemini History .",
   "If History is on, your Gemini Live audio, transcripts, and attachments, as well as your video & screenshares from the mobile app, are saved in History.",
   "You control whether your Gemini Live data is used to train generative AI models .",
-  "depending on your settings in Gemini History , transcripts of your Live chats and attachments you share with Gemini Live are used to train generative AI models.",
+  "Depending on your settings in Gemini History , transcripts of your Live chats and attachments you share with Gemini Live are used to train generative AI models.",
   "By default, your Gemini Live audio, video and screenshares are not used to train generative AI models.",
   "Please respect others’ privacy and ask permission before you record or include them in a Live chat.",
   "What happens to my data when I use Gemini in Chrome?",
